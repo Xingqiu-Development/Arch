@@ -3,7 +3,10 @@ package io.github.nosequel.core.player;
 import io.github.nosequel.core.CorePlugin;
 import io.github.nosequel.core.controller.Controller;
 import io.github.nosequel.core.controller.ControllerPriority;
-import io.github.nosequel.core.player.data.*;
+import io.github.nosequel.core.player.data.PlayerGeneralData;
+import io.github.nosequel.core.player.data.PlayerGrantData;
+import io.github.nosequel.core.player.data.PlayerPunishmentData;
+import io.github.nosequel.core.player.data.PlayerServerData;
 import io.github.nosequel.core.util.data.Data;
 import io.github.nosequel.core.util.data.DataController;
 import io.github.nosequel.core.util.database.DatabaseController;
@@ -11,10 +14,8 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 public class CorePlayerController implements DataController<CorePlayer, Data>, Controller {
@@ -26,8 +27,7 @@ public class CorePlayerController implements DataController<CorePlayer, Data>, C
             new PlayerGeneralData(),
             new PlayerGrantData(),
             new PlayerPunishmentData(),
-            new PlayerServerData(),
-            new PlayerCosmeticData()
+            new PlayerServerData()
     ));
 
     private DatabaseController databaseController;
@@ -45,6 +45,33 @@ public class CorePlayerController implements DataController<CorePlayer, Data>, C
     @Override
     public void unload() {
         this.players.forEach(player -> databaseController.getDataHandler().save(player, "profiles"));
+    }
+
+    /**
+     * Get all online players sorted by their rank's weight
+     *
+     * @return the list of players
+     */
+    public List<CorePlayer> getOnlineSortedPlayers() {
+        return Bukkit.getOnlinePlayers().stream()
+                .map(this::find)
+                .sorted(Comparator.comparingInt(profile -> profile.findData(PlayerGrantData.class).getGrant().getRank().getWeight())).sorted(Collections.reverseOrder())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Filter all data of a provided list by players and return a list of them
+     *
+     * @param players the list of players
+     * @param clazz   the class of the data
+     * @param <T>     the type of the data
+     * @return the list of filtered data
+     */
+    public <T extends Data> List<T> filterData(List<CorePlayer> players, Class<T> clazz) {
+        return players.stream()
+                .map(player -> player.findData(clazz))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     /**

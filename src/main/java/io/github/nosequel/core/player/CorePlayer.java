@@ -99,17 +99,13 @@ public class CorePlayer implements Loadable<Data> {
     }
 
     public String getDisplayName() {
-        return this.findData(PlayerGrantData.class)
-                .getGrant().getRank()
-                .getGeneralRankData().getColor()
-                + this.findData(PlayerGeneralData.class).getName();
+        return this.findData(PlayerGrantData.class).getGrant().getRank().getGeneralRankData().getColor() + this.findData(PlayerGeneralData.class).getName();
     }
 
     /**
      * Load the data objects of a player
      */
     private void loadData() {
-        this.addData(new PlayerCosmeticData());
         this.addData(new PlayerGrantData());
         this.addData(new PlayerGrantProcedureData());
         this.addData(new PlayerPunishmentData());

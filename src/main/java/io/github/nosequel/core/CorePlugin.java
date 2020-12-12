@@ -1,12 +1,10 @@
 package io.github.nosequel.core;
 
-import io.github.nosequel.core.commands.cosmetic.ColorCommands;
 import io.github.nosequel.core.commands.staff.StaffChatCommand;
 import io.github.nosequel.core.commands.user.InsertUserCommand;
 import io.github.nosequel.core.commands.ListCommand;
 import io.github.nosequel.core.commands.grant.GrantCommand;
 import io.github.nosequel.core.commands.RankCommand;
-import io.github.nosequel.core.commands.info.InfoCommand;
 import io.github.nosequel.core.commands.punishment.BanCommand;
 import io.github.nosequel.core.commands.punishment.HistoryCommand;
 import io.github.nosequel.core.commands.punishment.MuteCommand;
@@ -67,14 +65,12 @@ public class CorePlugin extends JavaPlugin {
                 new RankCommand(),
                 new GrantCommand(),
                 new ListCommand(),
-                new InfoCommand(),
                 new BanCommand(),
                 new MuteCommand(),
                 new HistoryCommand(),
                 new InsertUserCommand(),
                 new ResetUserCommand(),
-                new StaffChatCommand(),
-                new ColorCommands()
+                new StaffChatCommand()
                 )
         );
 

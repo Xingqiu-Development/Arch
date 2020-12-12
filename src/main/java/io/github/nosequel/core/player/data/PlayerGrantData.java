@@ -2,11 +2,6 @@ package io.github.nosequel.core.player.data;
 
 import com.google.gson.JsonObject;
 import io.github.nosequel.core.CorePlugin;
-import io.github.nosequel.core.commands.grant.menu.GrantsMenu;
-import io.github.nosequel.core.commands.info.InfoableData;
-import io.github.nosequel.core.commands.info.menu.InfoMenu;
-import io.github.nosequel.core.commands.info.menu.InfoMenuInstance;
-import io.github.nosequel.core.player.CorePlayer;
 import io.github.nosequel.core.player.grant.Grant;
 import io.github.nosequel.core.player.grant.GrantController;
 import io.github.nosequel.core.rank.RankController;
@@ -15,13 +10,8 @@ import io.github.nosequel.core.util.SortableArrayList;
 import io.github.nosequel.core.util.data.impl.SaveableData;
 import io.github.nosequel.core.util.json.JsonAppender;
 import io.github.nosequel.core.util.json.JsonUtils;
-import io.github.nosequel.katakuna.MenuHandler;
-import io.github.nosequel.katakuna.button.Button;
-import io.github.nosequel.katakuna.button.impl.ButtonBuilder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class PlayerGrantData implements SaveableData, InfoableData {
+public class PlayerGrantData implements SaveableData {
 
     private final String savePath = "grants";
 
@@ -98,25 +88,8 @@ public class PlayerGrantData implements SaveableData, InfoableData {
     }
 
     @Override
-    public Button getButton(CorePlayer target) {
-        return new ButtonBuilder(Material.PAPER)
-                .setDisplayName(ChatColor.BLUE + "Grants")
-                .setAmount(1)
-                .setLore(
-                        ChatColor.GREEN + "Amount of Grants: " + ChatColor.AQUA + this.getGrants().size(),
-                        ChatColor.GREEN + "Rank: " + ChatColor.AQUA + ChatColor.translateAlternateColorCodes('&', this.getGrant().getRank().getGeneralRankData().getDisplayName())
-                )
-                .setIndex(9)
-                .setAction((type, player) -> {
-                    final InfoMenu infoMenu = (InfoMenu) MenuHandler.get().findMenu(player);
-                    new InfoMenuInstance(new GrantsMenu(player, target), infoMenu).updateMenu();
-                });
-    }
-
-    @Override
     public JsonObject toJson() {
-        return new JsonAppender()
-                .append("grants", JsonUtils.getFromMap(grants.stream().collect(Collectors.toMap(
+        return new JsonAppender().append("grants", JsonUtils.getFromMap(grants.stream().collect(Collectors.toMap(
                         grant -> grant.getUuid().toString(),
                         grant -> grant.toJsonObject().toString())
                 )).toString()).get();

@@ -112,7 +112,7 @@ public class MessageConstants {
     public final String STAFF_SERVER_JOIN = BLUE + "[Staff] " + AQUA + "%player%" + AQUA + " has joined the network (%server%)";
     public final String STAFF_SERVER_LEFT = BLUE + "[Staff] " + AQUA + "%player%" + AQUA + " has left the network (%server%)";
 
-    public final String CHAT_FORMAT = "%rank_prefix%%name_color%%player_name%%rank_suffix%&7: &f%message%";
+    public final String CHAT_FORMAT = "%rank_prefix%%player_name%%rank_suffix%&7: &f%message%";
 
     public final String SERVER = Bukkit.getServerId();
 }

@@ -13,9 +13,7 @@ import io.github.nosequel.core.util.command.annotation.Command;
 import io.github.nosequel.core.util.command.annotation.Parameter;
 import io.github.nosequel.core.util.json.JsonAppender;
 import io.github.nosequel.core.util.synchronize.SynchronizeController;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class BanCommand {
 
@@ -23,7 +21,6 @@ public class BanCommand {
     public void ban(CommandSender sender, CorePlayer target, @Parameter(name = "duration", value = "permanent") String duration, @Parameter(name = "reason", value = "No reason provided") String reason) {
         final PlayerPunishmentData data = target.findData(PlayerPunishmentData.class);
         final PlayerGeneralData playerData = target.findData(PlayerGeneralData.class);
-        final Player player = Bukkit.getPlayer(target.getUuid());
 
         long durationLong;
 
